@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<style>
+    #strikethrough-button {
+        text-decoration: line-through;
+    }
+</style>
+
+<div class="jumbotron text-center">
+    <h1>Code Editor</h1>
+    <p>Because tracing algorithms in programs will (hopefully) be easier with strikethrough.</p>
+</div>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <form action="http://localhost:8080/post">
+                <button class="strikethrough" id="strikethrough-button" onclick="strikethrough()">s</button><br>
+                <label for="rowZero">0</label>
+                <input class="strikethrough" id="rowZero" name="code-editor-left" rows="20" cols="20" /><br>
+                <label for="rowOne">1</label>
+                <input class="strikethrough" id="rowOne" name="code-editor-left" rows="20" cols="40" /><br>
+
+                <br><br>
+                <input type="submit" value="Submit">
+            </form>
+        <div>
+        <div class="col rtf" contenteditable="true">Other stuff</div>
+    </div>
+</div>
+        <script>
+            function strikethrough() {
+                event.preventDefault();
+
+                var sel, range, node;
+                if (window.getSelection) {
+                    sel = window.getSelection();
+                    if (sel.getRangeAt && sel.rangeCount) {
+                        range = window.getSelection().getRangeAt(0);
+
+                        var html = '<s>' + range + '</s>'
+                        range.deleteContents();
+
+                        var el = document.createElement("div");
+                        el.innerHTML = html;
+                        var frag = document.createDocumentFragment(), node, lastNode;
+                        while ( (node = el.firstChild) ) {
+                            lastNode = frag.appendChild(node);
+                        }
+                        range.insertNode(frag);
+                    }
+                } else if (document.selection && document.selection.createRange) {
+                    range = document.selection.createRange();
+                    range.collapse(false);
+                    range.pasteHTML(html);
+                }
+            }
+        </script>
+</body>
+</html>
